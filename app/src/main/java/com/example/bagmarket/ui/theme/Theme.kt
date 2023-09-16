@@ -13,8 +13,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val LightColorPalette = lightColors(
     primary = Blue,
-    primaryVariant = BackgroundMain,
-    secondary = CardViewBackground
+    secondary = Blue,
+    background = BackgroundMain
 
     /* Other default colors to override
     background = Color.White,
@@ -44,7 +44,7 @@ fun MainAppTheme( content: @Composable () -> Unit) {
     )
 
     val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(BackgroundMain)
+    systemUiController.setSystemBarsColor(Blue)
 
 }
 
