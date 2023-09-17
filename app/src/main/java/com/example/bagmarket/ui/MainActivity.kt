@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainAppTheme {
                 Surface(color = BackgroundMain, modifier = Modifier.fillMaxSize()) {
-                    BagMarketUi()
+                    IntroScreen()
                 }
             }
         }
