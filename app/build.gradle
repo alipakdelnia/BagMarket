@@ -72,7 +72,6 @@ dependencies {
 
     implementation"androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
 
-    implementation "io.insert-koin:koin-android:3.2.0-beta-1"
 
 //   TODO: here we have an error and I don't know what is it
 //    implementation "com.github.parse-community.Parse-SDK-Android:parse:3.0.0"
@@ -84,5 +83,9 @@ dependencies {
     kapt("androidx.room:room-compiler:2.5.2")
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
+
+    implementation("dev.burnoo:cokoin:1.0.0")
+    implementation("dev.burnoo:cokoin-android-viewmodel:1.0.0") // for Androidx ViewModel
+    implementation("dev.burnoo:cokoin-android-navigation:1.0.0") // for Compose Navigation
 
 }

@@ -1,6 +1,5 @@
 package com.example.bagmarket.ui.features
 
-import android.media.Image
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -8,16 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.bagmarket.R
 import com.example.bagmarket.ui.theme.BackgroundMain
 import com.example.bagmarket.ui.theme.Blue
 import com.example.bagmarket.ui.theme.MainAppTheme
+import dev.burnoo.cokoin.navigation.getNavController
 
 
 @Preview(showBackground = true)
@@ -32,6 +29,7 @@ fun IntroScreenPreview() {
 
 @Composable
 fun IntroScreen() {
+    val navigation = getNavController()
 
     Image(
         modifier = Modifier
