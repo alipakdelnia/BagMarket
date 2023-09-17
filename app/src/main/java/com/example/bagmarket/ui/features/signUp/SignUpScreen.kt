@@ -2,8 +2,10 @@ package com.example.bagmarket.ui.features
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +19,9 @@ import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -122,12 +127,12 @@ fun MainCardView(SignUpEvent: () -> Unit) {
                 icon = R.drawable.baseline_email_24,
                 hint = "email..."
             ) { email.value = it }
-            MainTextField(
+            PasswordTextField(
                 edtValue = password.value,
                 icon = R.drawable.baseline_lock_24,
                 hint = "password..."
             ) { password.value = it }
-            MainTextField(
+            PasswordTextField(
                 edtValue = confirmedPassword.value,
                 icon = R.drawable.baseline_lock_24,
                 hint = "confirm password..."
@@ -177,6 +182,42 @@ fun MainTextField(
             .padding(top = 12.dp),
         shape = Shapes.medium,
         leadingIcon = { Icon(painterResource(icon), null) }
+
+    )
+
+}
+@Composable
+fun PasswordTextField(
+    edtValue: String,
+    icon: Int,
+    hint: String,
+    onValueChanges: (String) -> Unit
+) {
+    val passwordVisibility = remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        label = { Text(hint) },
+        value = edtValue,
+        singleLine = true,
+        onValueChange = onValueChanges,
+        placeholder = { Text(hint) },
+        modifier = Modifier
+            .fillMaxWidth(0.9f)
+            .padding(top = 12.dp),
+        shape = Shapes.medium,
+        leadingIcon = { Icon(painterResource(icon), null) },
+        visualTransformation = if(passwordVisibility.value ) VisualTransformation.None else PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        trailingIcon = {
+            val image = if( passwordVisibility.value ) painterResource(R.drawable.baseline_visibility_off_24)
+            else painterResource(R.drawable.baseline_visibility_24)
+
+            Icon(
+                painter = image,
+                contentDescription = null ,
+                modifier = Modifier.clickable { passwordVisibility.value = !passwordVisibility.value }
+            )
+        }
 
     )
 
