@@ -12,8 +12,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.bagmarket.di.MyModules
+import com.example.bagmarket.di.myModules
 import com.example.bagmarket.ui.features.*
+import com.example.bagmarket.ui.features.signUp.SingUpScreen
 import com.example.bagmarket.ui.theme.BackgroundMain
 import com.example.bagmarket.ui.theme.MainAppTheme
 import com.example.bagmarket.util.KEY_CATEGORY_ARG
@@ -21,15 +22,16 @@ import com.example.bagmarket.util.KEY_PRODUCT_ARG
 import com.example.bagmarket.util.MyScreens
 import dev.burnoo.cokoin.Koin
 import dev.burnoo.cokoin.navigation.KoinNavHost
+import dev.burnoo.cokoin.navigation.getNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Koin(appDeclaration = { modules(MyModules) }) {
+            Koin(appDeclaration = { modules(myModules) }) {
                 MainAppTheme {
                     Surface(color = BackgroundMain, modifier = Modifier.fillMaxSize()) {
-                        IntroScreen()
+                        BagMarketUi()
                     }
                 }
             }
@@ -45,7 +47,7 @@ fun BagMarketUi() {
     val navController = rememberNavController()
     KoinNavHost(
         navController = navController,
-        startDestination = MyScreens.MainScreen.route
+        startDestination = MyScreens.IntroScreen.route
     ) {
 
         composable(MyScreens.MainScreen.route) {

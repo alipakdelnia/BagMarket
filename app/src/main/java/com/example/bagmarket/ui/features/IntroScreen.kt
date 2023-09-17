@@ -14,6 +14,7 @@ import com.example.bagmarket.R
 import com.example.bagmarket.ui.theme.BackgroundMain
 import com.example.bagmarket.ui.theme.Blue
 import com.example.bagmarket.ui.theme.MainAppTheme
+import com.example.bagmarket.util.MyScreens
 import dev.burnoo.cokoin.navigation.getNavController
 
 
@@ -42,14 +43,16 @@ fun IntroScreen() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.8f),//todo: change size
+            .fillMaxHeight(0.62f),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Bottom
     ) {
 
         Button(
             modifier = Modifier.fillMaxWidth(0.7f),
-            onClick = { }) {
+            onClick = {
+                navigation.navigate(MyScreens.SignUpScreen.route)
+            }) {
 
             Text(text = "Sign Up")
 
@@ -58,11 +61,9 @@ fun IntroScreen() {
         Button(
             modifier = Modifier.fillMaxWidth(0.7f),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            onClick = { }) {
-
-            Text(text = "Sign In", color = Blue)
-
-        }
+            onClick = {
+                navigation.navigate(MyScreens.SignInScreen.route)
+            }) { Text(text = "Sign In", color = Blue) }
 
     }
 }

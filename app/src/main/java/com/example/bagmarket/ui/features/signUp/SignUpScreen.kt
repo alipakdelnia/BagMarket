@@ -1,4 +1,4 @@
-package com.example.bagmarket.ui.features
+package com.example.bagmarket.ui.features.signUp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,14 +8,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -25,10 +24,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bagmarket.R
+import com.example.bagmarket.ui.features.signUp.SignUpViewModel
 import com.example.bagmarket.ui.theme.BackgroundMain
 import com.example.bagmarket.ui.theme.MainAppTheme
 import com.example.bagmarket.ui.theme.Shapes
+import dev.burnoo.cokoin.navigation.getNavController
+import dev.burnoo.cokoin.navigation.getNavViewModel
 
 @Preview(showBackground = true)
 @Composable
@@ -43,6 +46,9 @@ fun SingUpScreenPreview() {
 
 @Composable
 fun SingUpScreen() {
+
+    val navigation = getNavController()
+    val viewModel =  getNavViewModel<SignUpViewModel>( )
 
     Box {
 
@@ -63,8 +69,8 @@ fun SingUpScreen() {
 
             IconApp()
 
-            MainCardView {
-
+            MainCardView(viewModel) {
+                viewModel.signUpUser()
             }
 
         }
@@ -89,11 +95,11 @@ fun IconApp() {
 
 
 @Composable
-fun MainCardView(SignUpEvent: () -> Unit) {
-    val name = remember { mutableStateOf("") }
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-    val confirmedPassword = remember { mutableStateOf("") }
+fun MainCardView(viewModel: SignUpViewModel,SignUpEvent: () -> Unit) {
+    val name = viewModel.name.observeAsState("")
+    val email = viewModel.email.observeAsState("")
+    val password =viewModel.password.observeAsState("")
+    val confirmedPassword = viewModel.confirmPassword.observeAsState("")
 
     Card(
         modifier = Modifier
@@ -121,22 +127,22 @@ fun MainCardView(SignUpEvent: () -> Unit) {
                 edtValue = name.value,
                 icon = R.drawable.baseline_person_24,
                 hint = "your full name..."
-            ) { name.value = it }
+            ) { viewModel.name.value = it }
             MainTextField(
                 edtValue = email.value,
                 icon = R.drawable.baseline_email_24,
                 hint = "email..."
-            ) { email.value = it }
+            ) { viewModel.email.value = it }
             PasswordTextField(
                 edtValue = password.value,
                 icon = R.drawable.baseline_lock_24,
                 hint = "password..."
-            ) { password.value = it }
+            ) { viewModel.password.value = it }
             PasswordTextField(
                 edtValue = confirmedPassword.value,
                 icon = R.drawable.baseline_lock_24,
                 hint = "confirm password..."
-            ) { confirmedPassword.value = it }
+            ) { viewModel.confirmPassword.value = it }
 
             Button(
                 onClick = SignUpEvent,
