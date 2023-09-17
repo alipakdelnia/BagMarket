@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.bagmarket.di.myModules
 import com.example.bagmarket.ui.features.*
+import com.example.bagmarket.ui.features.SignIn.SingInScreen
 import com.example.bagmarket.ui.features.signUp.SingUpScreen
 import com.example.bagmarket.ui.theme.BackgroundMain
 import com.example.bagmarket.ui.theme.MainAppTheme
@@ -22,7 +23,6 @@ import com.example.bagmarket.util.KEY_PRODUCT_ARG
 import com.example.bagmarket.util.MyScreens
 import dev.burnoo.cokoin.Koin
 import dev.burnoo.cokoin.navigation.KoinNavHost
-import dev.burnoo.cokoin.navigation.getNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

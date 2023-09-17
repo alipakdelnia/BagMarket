@@ -1,4 +1,5 @@
-package com.example.bagmarket.ui.features.signUp
+package com.example.bagmarket.ui.features.SignIn
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,19 +40,19 @@ import dev.burnoo.cokoin.navigation.getNavViewModel
 
 @Preview(showBackground = true)
 @Composable
-fun SingUpScreenPreview() {
+fun SingInScreenPreview() {
     MainAppTheme {
         Surface(color = BackgroundMain, modifier = Modifier.fillMaxSize()) {
-            SingUpScreen()
+            SingInScreen()
         }
     }
 }
 
 @Composable
-fun SingUpScreen() {
+fun SingInScreen() {
 
     val navigation = getNavController()
-    val viewModel = getNavViewModel<SignUpViewModel>()
+    val viewModel = getNavViewModel<SignInViewModel>()
 
     Box {
 
@@ -65,15 +66,15 @@ fun SingUpScreen() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.85f),
+                .fillMaxHeight(0.60f),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             IconApp()
 
-            MainCardView(navigation, viewModel) {
-                viewModel.signUpUser()
+            MainCardView(navigation,viewModel) {
+                viewModel.signInUser()
             }
         }
     }
@@ -97,11 +98,9 @@ fun IconApp() {
 
 
 @Composable
-fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEvent: () -> Unit) {
-    val name = viewModel.name.observeAsState("")
+fun MainCardView(navigation :NavController,viewModel: SignInViewModel, SignUpEvent: () -> Unit) {
     val email = viewModel.email.observeAsState("")
     val password = viewModel.password.observeAsState("")
-    val confirmedPassword = viewModel.confirmPassword.observeAsState("")
 
     Card(
         modifier = Modifier
@@ -116,7 +115,7 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
         ) {
 
             Text(
-                text = "Sign Up!",
+                text = "Sign In!",
                 modifier = Modifier.padding(top = 18.dp, bottom = 18.dp),
                 style = TextStyle(
                     color = Color.Blue,
@@ -125,11 +124,7 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
                 )
             )
 
-            MainTextField(
-                edtValue = name.value,
-                icon = R.drawable.baseline_person_24,
-                hint = "your full name..."
-            ) { viewModel.name.value = it }
+
             MainTextField(
                 edtValue = email.value,
                 icon = R.drawable.baseline_email_24,
@@ -140,39 +135,32 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
                 icon = R.drawable.baseline_lock_24,
                 hint = "password..."
             ) { viewModel.password.value = it }
-            PasswordTextField(
-                edtValue = confirmedPassword.value,
-                icon = R.drawable.baseline_lock_24,
-                hint = "confirm password..."
-            ) { viewModel.confirmPassword.value = it }
+
 
             Button(
                 onClick = SignUpEvent,
                 modifier = Modifier.padding(top = 28.dp, bottom = 8.dp)
             ) {
-                Text(modifier = Modifier.padding(8.dp), text = "Register Account")
+                Text(modifier = Modifier.padding(8.dp), text = "Log In")
             }
 
             Row(
-                modifier = Modifier.padding(38.dp),
+                modifier = Modifier.padding(18.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Already have an account ?")
+                Text(text = "Don't have an account? ")
                 TextButton(onClick = {
-                    navigation.navigate(MyScreens.SignInScreen.route) {
-                        popUpTo(MyScreens.SignUpScreen.route) {
+                    navigation.navigate(MyScreens.SignUpScreen.route){
+                        popUpTo(MyScreens.SignInScreen.route){
                             inclusive = true
                         }
                     }
                 }) {
-                    Text(text = "Log In", color = Color.Blue)
+                    Text(text = " Register Here ", color = Color.Blue)
                 }
             }
-
-
         }
-
     }
 
 }
