@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +40,8 @@ import com.example.bagmarket.ui.theme.Blue
 import com.example.bagmarket.ui.theme.MainAppTheme
 import com.example.bagmarket.ui.theme.Shapes
 import com.example.bagmarket.util.MyScreens
+import com.example.bagmarket.util.NetworkChecker
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.burnoo.cokoin.navigation.getNavController
 import dev.burnoo.cokoin.navigation.getNavViewModel
 
@@ -54,6 +57,8 @@ fun SingInScreenPreview() {
 
 @Composable
 fun SingInScreen() {
+    val uiController = rememberSystemUiController()
+    SideEffect { uiController.setStatusBarColor(Blue) }
 
     val navigation = getNavController()
     val viewModel = getNavViewModel<SignInViewModel>()
@@ -148,14 +153,22 @@ fun MainCardView(navigation: NavController, viewModel: SignInViewModel, SignInEv
                     if (email.value.isNotEmpty() &&
                         password.value.isNotEmpty()
                     ) {
-                        if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()){
-                            SignInEvent
-                            Toast.makeText(
-                                context,
-                                R.string.loged_in,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }else{
+                        if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()) {
+                            if (NetworkChecker(context).isInternetConnected) {
+                                SignInEvent.invoke()
+                                Toast.makeText(
+                                    context,
+                                    R.string.loged_in,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    R.string.check_internet_connection,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } else {
                             Toast.makeText(
                                 context,
                                 R.string.enter_true_email_address,

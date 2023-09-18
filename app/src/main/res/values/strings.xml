@@ -19,4 +19,5 @@
     <string name="character_isnt_8">password character most be more than8!</string>
     <string name="account_crearted">account created...</string>
     <string name="loged_in">Log in...</string>
+    <string name="check_internet_connection">please check you internet connection</string>
 </resources>
