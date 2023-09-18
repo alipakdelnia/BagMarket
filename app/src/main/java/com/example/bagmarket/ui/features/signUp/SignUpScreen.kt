@@ -1,5 +1,7 @@
 package com.example.bagmarket.ui.features.signUp
 
+import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -103,6 +106,7 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
     val email = viewModel.email.observeAsState("")
     val password = viewModel.password.observeAsState("")
     val confirmedPassword = viewModel.confirmPassword.observeAsState("")
+    val context = LocalContext.current
 
     Card(
         modifier = Modifier
@@ -148,10 +152,58 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
             ) { viewModel.confirmPassword.value = it }
 
             Button(
-                onClick = SignUpEvent,
+                onClick = {
+                    if (name.value.isNotEmpty() &&
+                        email.value.isNotEmpty() &&
+                        password.value.isNotEmpty() &&
+                        confirmedPassword.value.isNotEmpty()
+                    ) {
+                        if (password.value == confirmedPassword.value) {
+                            if (password.value.length >= 8) {
+
+                                if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()) {
+                                    SignUpEvent
+                                    Toast.makeText(
+                                        context,
+                                        R.string.account_crearted,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        R.string.enter_true_email_address,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }else{
+                                Toast.makeText(
+                                    context,
+                                     R.string.character_isnt_8,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } else {
+                                Toast.makeText(
+                                    context,
+                                    R.string.passwords_not_same,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                    } else {
+                        Toast.makeText(
+                            context,
+                            R.string.please_enter_all_values,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                },
                 modifier = Modifier.padding(top = 28.dp, bottom = 8.dp)
             ) {
-                Text(modifier = Modifier.padding(8.dp), text = stringResource(R.string.Register_Account))
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = stringResource(R.string.Register_Account)
+                )
             }
 
             Row(

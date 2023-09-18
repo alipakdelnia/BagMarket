@@ -15,4 +15,10 @@
     <string name="RegisterHere">" Register Here "</string>
     <string name="app_name">Bag Market</string>
     <string name="choose_language">choose your language:</string>
+    <string name="please_enter_all_values">please enter all values</string>
+    <string name="enter_true_email_address">please enter a true email address</string>
+    <string name="passwords_not_same">passwords are not the same!</string>
+    <string name="character_isnt_8">password character most be more than8!</string>
+    <string name="account_crearted">account created...</string>
+    <string name="loged_in">Log in...</string>
 </resources>

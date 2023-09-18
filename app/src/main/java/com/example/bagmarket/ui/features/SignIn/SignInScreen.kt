@@ -1,6 +1,8 @@
 package com.example.bagmarket.ui.features.SignIn
 
 
+import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -74,7 +77,7 @@ fun SingInScreen() {
 
             IconApp()
 
-            MainCardView(navigation,viewModel) {
+            MainCardView(navigation, viewModel) {
                 viewModel.signInUser()
             }
         }
@@ -99,9 +102,10 @@ fun IconApp() {
 
 
 @Composable
-fun MainCardView(navigation :NavController,viewModel: SignInViewModel, SignUpEvent: () -> Unit) {
+fun MainCardView(navigation: NavController, viewModel: SignInViewModel, SignInEvent: () -> Unit) {
     val email = viewModel.email.observeAsState("")
     val password = viewModel.password.observeAsState("")
+    val context = LocalContext.current
 
     Card(
         modifier = Modifier
@@ -139,7 +143,34 @@ fun MainCardView(navigation :NavController,viewModel: SignInViewModel, SignUpEve
 
 
             Button(
-                onClick = SignUpEvent,
+                onClick = {
+
+                    if (email.value.isNotEmpty() &&
+                        password.value.isNotEmpty()
+                    ) {
+                        if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()){
+                            SignInEvent
+                            Toast.makeText(
+                                context,
+                                R.string.loged_in,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }else{
+                            Toast.makeText(
+                                context,
+                                R.string.enter_true_email_address,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        Toast.makeText(
+                            context,
+                            R.string.please_enter_all_values,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                },
                 modifier = Modifier.padding(top = 28.dp, bottom = 8.dp)
             ) {
                 Text(modifier = Modifier.padding(8.dp), text = stringResource(R.string.log_in))
@@ -152,8 +183,8 @@ fun MainCardView(navigation :NavController,viewModel: SignInViewModel, SignUpEve
             ) {
                 Text(text = stringResource(R.string.Do_not_have_an_account))
                 TextButton(onClick = {
-                    navigation.navigate(MyScreens.SignUpScreen.route){
-                        popUpTo(MyScreens.SignInScreen.route){
+                    navigation.navigate(MyScreens.SignUpScreen.route) {
+                        popUpTo(MyScreens.SignInScreen.route) {
                             inclusive = true
                         }
                     }
