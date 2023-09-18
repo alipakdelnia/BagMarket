@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -116,7 +117,7 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
         ) {
 
             Text(
-                text = "Sign Up!",
+                text = "${stringResource(R.string.sign_up)}!",
                 modifier = Modifier.padding(top = 18.dp, bottom = 18.dp),
                 style = TextStyle(
                     color = Color.Blue,
@@ -128,29 +129,29 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
             MainTextField(
                 edtValue = name.value,
                 icon = R.drawable.baseline_person_24,
-                hint = "your full name..."
+                hint = stringResource(R.string.your_full_name)
             ) { viewModel.name.value = it }
             MainTextField(
                 edtValue = email.value,
                 icon = R.drawable.baseline_email_24,
-                hint = "email..."
+                hint = stringResource(R.string.email)
             ) { viewModel.email.value = it }
             PasswordTextField(
                 edtValue = password.value,
                 icon = R.drawable.baseline_lock_24,
-                hint = "password..."
+                hint = stringResource(R.string.password)
             ) { viewModel.password.value = it }
             PasswordTextField(
                 edtValue = confirmedPassword.value,
                 icon = R.drawable.baseline_lock_24,
-                hint = "confirm password..."
+                hint = stringResource(R.string.confirm_password)
             ) { viewModel.confirmPassword.value = it }
 
             Button(
                 onClick = SignUpEvent,
                 modifier = Modifier.padding(top = 28.dp, bottom = 8.dp)
             ) {
-                Text(modifier = Modifier.padding(8.dp), text = "Register Account")
+                Text(modifier = Modifier.padding(8.dp), text = stringResource(R.string.Register_Account))
             }
 
             Row(
@@ -158,7 +159,7 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Already have an account ?")
+                Text(text = stringResource(R.string.Already_have_an_account))
                 TextButton(onClick = {
                     navigation.navigate(MyScreens.SignInScreen.route) {
                         popUpTo(MyScreens.SignUpScreen.route) {
@@ -166,7 +167,7 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
                         }
                     }
                 }) {
-                    Text(text = "Log In", color = Color.Blue)
+                    Text(text = stringResource(R.string.log_in), color = Color.Blue)
                 }
             }
 

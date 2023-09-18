@@ -1,3 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BagMarket</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="log_in">Log In</string>
+    <string name="Already_have_an_account">Already have an account ?</string>
+    <string name="Register_Account">Register Account</string>
+    <string name="your_full_name">your full name</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="Do_not_have_an_account">\"Don\'t have an account? \"</string>
+    <string name="RegisterHere">" Register Here"</string>
+    <string name="app_name">Bag Market</string>
+    <string name="choose_language">choose your language:</string>
 </resources>

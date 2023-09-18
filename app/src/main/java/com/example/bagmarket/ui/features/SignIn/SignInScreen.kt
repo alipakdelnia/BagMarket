@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -115,7 +116,7 @@ fun MainCardView(navigation :NavController,viewModel: SignInViewModel, SignUpEve
         ) {
 
             Text(
-                text = "Sign In!",
+                text = "${stringResource(R.string.sign_in)}!",
                 modifier = Modifier.padding(top = 18.dp, bottom = 18.dp),
                 style = TextStyle(
                     color = Color.Blue,
@@ -128,12 +129,12 @@ fun MainCardView(navigation :NavController,viewModel: SignInViewModel, SignUpEve
             MainTextField(
                 edtValue = email.value,
                 icon = R.drawable.baseline_email_24,
-                hint = "email..."
+                hint = stringResource(R.string.email)
             ) { viewModel.email.value = it }
             PasswordTextField(
                 edtValue = password.value,
                 icon = R.drawable.baseline_lock_24,
-                hint = "password..."
+                hint = stringResource(R.string.password)
             ) { viewModel.password.value = it }
 
 
@@ -141,7 +142,7 @@ fun MainCardView(navigation :NavController,viewModel: SignInViewModel, SignUpEve
                 onClick = SignUpEvent,
                 modifier = Modifier.padding(top = 28.dp, bottom = 8.dp)
             ) {
-                Text(modifier = Modifier.padding(8.dp), text = "Log In")
+                Text(modifier = Modifier.padding(8.dp), text = stringResource(R.string.log_in))
             }
 
             Row(
@@ -149,7 +150,7 @@ fun MainCardView(navigation :NavController,viewModel: SignInViewModel, SignUpEve
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Don't have an account? ")
+                Text(text = stringResource(R.string.Do_not_have_an_account))
                 TextButton(onClick = {
                     navigation.navigate(MyScreens.SignUpScreen.route){
                         popUpTo(MyScreens.SignInScreen.route){
@@ -157,7 +158,7 @@ fun MainCardView(navigation :NavController,viewModel: SignInViewModel, SignUpEve
                         }
                     }
                 }) {
-                    Text(text = " Register Here ", color = Color.Blue)
+                    Text(text = stringResource(R.string.RegisterHere), color = Color.Blue)
                 }
             }
         }

@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+
+    <string name="sign_up">ثبت نام</string>
+    <string name="sign_in">ورود</string>
+    <string name="email">ایمیل</string>
+    <string name="password">رمز عبور</string>
+    <string name="log_in">ورود</string>
+    <string name="Already_have_an_account">از قبل حساب کاربری دارید؟</string>
+    <string name="Register_Account">ثبت حساب</string>
+    <string name="your_full_name">نام و نام خانوادکی</string>
+    <string name="confirm_password">تایید رمز عبور</string>
+    <string name="Do_not_have_an_account">هنوز حساب کاربری ندارید؟</string>
+    <string name="RegisterHere">اینجا ایجاد کنید</string>
+    <string name="app_name">Bag Market</string>
+    <string name="choose_language">زبان را انتخاب کنید</string>
+</resources>

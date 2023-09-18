@@ -15,6 +15,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        resConfigs("en", "fa")
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
@@ -87,5 +89,7 @@ dependencies {
     implementation("dev.burnoo:cokoin:1.0.0")
     implementation("dev.burnoo:cokoin-android-viewmodel:1.0.0") // for Androidx ViewModel
     implementation("dev.burnoo:cokoin-android-navigation:1.0.0") // for Compose Navigation
+
+    implementation 'androidx.appcompat:appcompat:1.7.0-alpha01'
 
 }
