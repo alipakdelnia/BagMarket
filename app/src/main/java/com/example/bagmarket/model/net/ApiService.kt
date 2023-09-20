@@ -15,10 +15,10 @@ import retrofit2.http.POST
 
 interface ApiService {
 
-    @POST
+    @POST("signUp")
     suspend fun signUp(@Body jsonObject: JsonObject):LoginResponsed
 
-    @POST
+    @POST("signIn")
     suspend fun singIn(@Body jsonObject: JsonObject):LoginResponsed
 
     @GET("refreshToken")

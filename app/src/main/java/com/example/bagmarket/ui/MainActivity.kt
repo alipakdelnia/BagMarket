@@ -63,7 +63,7 @@ fun BagMarketUi() {
 
         composable(MyScreens.MainScreen.route) {
 
-            if (TokenInMemory.token == null){
+            if (TokenInMemory.token != null){
                 MainScreen()
             }else{
                 IntroScreen()
