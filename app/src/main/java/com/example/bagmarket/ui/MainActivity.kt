@@ -14,6 +14,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.bagmarket.di.myModules
+import com.example.bagmarket.model.repository.TokenInMemory
+import com.example.bagmarket.model.repository.UserRepository
 import com.example.bagmarket.ui.features.*
 import com.example.bagmarket.ui.features.SignIn.SingInScreen
 import com.example.bagmarket.ui.features.signUp.SingUpScreen
@@ -23,6 +25,7 @@ import com.example.bagmarket.util.KEY_CATEGORY_ARG
 import com.example.bagmarket.util.KEY_PRODUCT_ARG
 import com.example.bagmarket.util.MyScreens
 import dev.burnoo.cokoin.Koin
+import dev.burnoo.cokoin.get
 import dev.burnoo.cokoin.navigation.KoinNavHost
 import org.koin.android.ext.koin.androidContext
 
@@ -35,6 +38,10 @@ class MainActivity : ComponentActivity() {
                 modules(myModules) }) {
                 MainAppTheme {
                     Surface(color = BackgroundMain, modifier = Modifier.fillMaxSize()) {
+
+                        val userRepository : UserRepository= get()
+                        userRepository.loadToken()
+
                         BagMarketUi()
                     }
                 }
@@ -51,11 +58,17 @@ fun BagMarketUi() {
     val navController = rememberNavController()
     KoinNavHost(
         navController = navController,
-        startDestination = MyScreens.IntroScreen.route
+        startDestination = MyScreens.MainScreen.route
     ) {
 
         composable(MyScreens.MainScreen.route) {
-            MainScreen()
+
+            if (TokenInMemory.token == null){
+                MainScreen()
+            }else{
+                IntroScreen()
+            }
+
         }
 
         composable(

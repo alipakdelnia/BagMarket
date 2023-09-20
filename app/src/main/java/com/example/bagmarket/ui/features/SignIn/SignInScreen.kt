@@ -41,6 +41,7 @@ import com.example.bagmarket.ui.theme.MainAppTheme
 import com.example.bagmarket.ui.theme.Shapes
 import com.example.bagmarket.util.MyScreens
 import com.example.bagmarket.util.NetworkChecker
+import com.example.bagmarket.util.VALUE_SUCCESS
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.burnoo.cokoin.navigation.getNavController
 import dev.burnoo.cokoin.navigation.getNavViewModel
@@ -59,6 +60,8 @@ fun SingInScreenPreview() {
 fun SingInScreen() {
     val uiController = rememberSystemUiController()
     SideEffect { uiController.setStatusBarColor(Blue) }
+
+    val context = LocalContext.current
 
     val navigation = getNavController()
     val viewModel = getNavViewModel<SignInViewModel>()
@@ -83,7 +86,18 @@ fun SingInScreen() {
             IconApp()
 
             MainCardView(navigation, viewModel) {
-                viewModel.signInUser()
+                viewModel.signInUser {
+                    if (it == VALUE_SUCCESS) {
+                        navigation.navigate(MyScreens.MainScreen.route) {
+                            popUpTo(MyScreens.IntroScreen.route) {
+                                inclusive = true
+                            }
+                        }
+
+                    } else {
+                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

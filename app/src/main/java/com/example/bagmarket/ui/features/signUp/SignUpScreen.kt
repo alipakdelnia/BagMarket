@@ -40,6 +40,7 @@ import com.example.bagmarket.ui.theme.MainAppTheme
 import com.example.bagmarket.ui.theme.Shapes
 import com.example.bagmarket.util.MyScreens
 import com.example.bagmarket.util.NetworkChecker
+import com.example.bagmarket.util.VALUE_SUCCESS
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.burnoo.cokoin.navigation.getNavController
 import dev.burnoo.cokoin.navigation.getNavViewModel
@@ -58,6 +59,8 @@ fun SingUpScreenPreview() {
 fun SingUpScreen() {
     val uiController = rememberSystemUiController()
     SideEffect { uiController.setStatusBarColor(Blue) }
+
+    val context = LocalContext.current
 
     val navigation = getNavController()
     val viewModel = getNavViewModel<SignUpViewModel>()
@@ -82,7 +85,17 @@ fun SingUpScreen() {
             IconApp()
 
             MainCardView(navigation, viewModel) {
-                viewModel.signUpUser()
+                viewModel.signUpUser {
+                    if (it == VALUE_SUCCESS) {
+                        navigation.navigate(MyScreens.MainScreen.route) {
+                            popUpTo(MyScreens.IntroScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    } else {
+                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -174,7 +187,7 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
                                             R.string.account_crearted,
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                    }else{
+                                    } else {
                                         Toast.makeText(
                                             context,
                                             R.string.check_internet_connection,
@@ -188,20 +201,20 @@ fun MainCardView(navigation: NavController, viewModel: SignUpViewModel, SignUpEv
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-                            }else{
+                            } else {
                                 Toast.makeText(
                                     context,
-                                     R.string.character_isnt_8,
+                                    R.string.character_isnt_8,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         } else {
-                                Toast.makeText(
-                                    context,
-                                    R.string.passwords_not_same,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                            Toast.makeText(
+                                context,
+                                R.string.passwords_not_same,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     } else {
                         Toast.makeText(
                             context,
