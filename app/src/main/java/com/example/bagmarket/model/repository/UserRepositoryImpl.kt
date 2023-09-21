@@ -15,7 +15,7 @@ class UserRepositoryImpl(
 
         val jsonObject = JsonObject().apply{
             addProperty("name",name)
-            addProperty("userName",userName)
+            addProperty("email",userName)
             addProperty("password",password)
         }
 
