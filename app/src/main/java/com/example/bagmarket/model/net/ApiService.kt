@@ -1,6 +1,8 @@
 package com.example.bagmarket.model.net
 
+import com.example.bagmarket.model.data.AdsResponse
 import com.example.bagmarket.model.data.LoginResponsed
+import com.example.bagmarket.model.data.ProductResponse
 import com.example.bagmarket.model.repository.TokenInMemory
 import com.example.bagmarket.util.BASE_URL
 import com.google.gson.JsonObject
@@ -23,6 +25,12 @@ interface ApiService {
 
     @GET("refreshToken")
     fun refreshToken() : Call<LoginResponsed>
+
+    @GET("getProducts")
+    suspend fun getAllProducts() : ProductResponse
+
+    @GET("getSliderPics")
+    suspend fun getAllAds():AdsResponse
 
 }
 

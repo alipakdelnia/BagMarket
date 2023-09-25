@@ -1,7 +1,8 @@
-package com.example.bagmarket.model.repository
+package com.example.bagmarket.model.repository.user
 
 import android.content.SharedPreferences
 import com.example.bagmarket.model.net.ApiService
+import com.example.bagmarket.model.repository.TokenInMemory
 import com.example.bagmarket.util.VALUE_SUCCESS
 import com.google.gson.JsonObject
 
@@ -21,7 +22,7 @@ class UserRepositoryImpl(
 
         val result = apiService.signUp(jsonObject)
         if (result.success){
-            TokenInMemory.refreshToken(userName,result.token)
+            TokenInMemory.refreshToken(userName, result.token)
             saveToken(result.token)
             saveUserName(userName)
             return VALUE_SUCCESS
@@ -39,7 +40,7 @@ class UserRepositoryImpl(
 
         val result = apiService.singIn(jasonObject)
         if (result.success){
-            TokenInMemory.refreshToken(userName,result.token)
+            TokenInMemory.refreshToken(userName, result.token)
             saveToken(result.token)
             saveUserName(userName)
             return VALUE_SUCCESS
@@ -50,12 +51,12 @@ class UserRepositoryImpl(
     }
 
     override fun signOut() {
-        TokenInMemory.refreshToken(null,null)
+        TokenInMemory.refreshToken(null, null)
         sharedPref.edit().clear().apply()
     }
 
     override fun loadToken() {
-        TokenInMemory.refreshToken(getUserName(),getToken())
+        TokenInMemory.refreshToken(getUserName(), getToken())
     }
 
     override fun saveToken(newToken: String) {

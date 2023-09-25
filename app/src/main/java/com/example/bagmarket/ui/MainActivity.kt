@@ -3,7 +3,6 @@ package com.example.bagmarket.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -15,7 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.bagmarket.di.myModules
 import com.example.bagmarket.model.repository.TokenInMemory
-import com.example.bagmarket.model.repository.UserRepository
+import com.example.bagmarket.model.repository.user.UserRepository
 import com.example.bagmarket.ui.features.*
 import com.example.bagmarket.ui.features.SignIn.SingInScreen
 import com.example.bagmarket.ui.features.signUp.SingUpScreen
@@ -39,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 MainAppTheme {
                     Surface(color = BackgroundMain, modifier = Modifier.fillMaxSize()) {
 
-                        val userRepository : UserRepository= get()
+                        val userRepository : UserRepository = get()
                         userRepository.loadToken()
 
                         BagMarketUi()

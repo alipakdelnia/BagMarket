@@ -1,10 +1,9 @@
 package com.example.bagmarket.ui.features.signUp
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bagmarket.model.repository.UserRepository
+import com.example.bagmarket.model.repository.user.UserRepository
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(private val userRepository: UserRepository) : ViewModel() {

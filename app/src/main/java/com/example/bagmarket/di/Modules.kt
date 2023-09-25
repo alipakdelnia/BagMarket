@@ -2,8 +2,8 @@ package com.example.bagmarket.di
 
 import android.content.Context
 import com.example.bagmarket.model.net.createApiService
-import com.example.bagmarket.model.repository.UserRepository
-import com.example.bagmarket.model.repository.UserRepositoryImpl
+import com.example.bagmarket.model.repository.user.UserRepository
+import com.example.bagmarket.model.repository.user.UserRepositoryImpl
 import com.example.bagmarket.ui.features.SignIn.SignInViewModel
 import com.example.bagmarket.ui.features.signUp.SignUpViewModel
 import org.koin.android.ext.koin.androidContext

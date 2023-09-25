@@ -1,4 +1,4 @@
-package com.example.bagmarket.model.repository
+package com.example.bagmarket.model.repository.user
 
 interface UserRepository {
     //online with coroutine
