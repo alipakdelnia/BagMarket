@@ -5,7 +5,7 @@ import com.example.bagmarket.model.data.Product
 
 interface ProductRepository {
 
-    suspend fun getAllProducts() : List<Product>
-    suspend fun getAllAds(): List<Ads>
+    suspend fun getAllProducts(isInternetConnected : Boolean) : List<Product>
+    suspend fun getAllAds(isInternetConnected : Boolean): List<Ads>
 
 }
