@@ -5,22 +5,22 @@ import androidx.room.PrimaryKey
 
 
 data class ProductResponse(
-    val success: Boolean,
-    val products: List<Product>
+    val success :Boolean ,
+    val products :List<Product>
 )
 
 @Entity("product_table")
 data class Product(
-    val category: String,
-    val detailText: String,
-    val imgUrl: String,
-    val material: String,
-    val name: String,
-    val price: String,
 
     @PrimaryKey
     val productId: String,
 
+    val name: String,
+    val imgUrl: String,
+    val detailText: String,
+    val price: String,
     val soldItem: String,
+    val category: String,
+    val material: String,
     val tags: String
 )

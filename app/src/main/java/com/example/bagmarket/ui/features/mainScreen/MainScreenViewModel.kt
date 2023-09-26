@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class MainScreenViewModel(
     private val productRepository: ProductRepository,
-    isInternetConnected: Boolean
+    isInternetConnected: Boolean = true
 ) : ViewModel() {
 
     val dataProducts = mutableStateOf<List<Product>>(listOf())
