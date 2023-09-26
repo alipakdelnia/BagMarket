@@ -25,6 +25,7 @@ val dataFromServer = apiService.getAllProducts()
 return listOf()
     }
 
+
     override suspend fun getAllAds(isInternetConnected : Boolean): List<Ads> {
 
         if (isInternetConnected){
