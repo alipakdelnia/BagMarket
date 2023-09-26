@@ -11,12 +11,12 @@ import com.example.bagmarket.model.data.Product
 interface ProductDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrUpdate(products:List<Product>)
+    suspend fun insertOrUpdate(products :List<Product>)
 
     @Query("SELECT * FROM product_table")
-    suspend fun getAll():List<Product>
+    suspend fun getAll() :List<Product>
 
-    @Query("SELECT * FROM product_table WHERE productId= :productId")
-    suspend fun getById(productId: String): Product
+    @Query("SELECT * FROM product_table WHERE productId = :productId")
+    suspend fun getById( productId :String ) : Product
 
 }
