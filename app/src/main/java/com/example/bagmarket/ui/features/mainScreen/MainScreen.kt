@@ -89,6 +89,7 @@ fun ProductSubjectList(tags: List<String>, products: List<Product>, ads: List<Ad
     if (products.isNotEmpty()){
         Column {
             tags.forEachIndexed { it, _ ->
+
                 val withTagsData = products.filter { product -> product.tags == tags[it] }
                 ProductSubject(tags[it],withTagsData.shuffled())
 
