@@ -25,6 +25,8 @@ class MainScreenViewModel(
 
     private fun refreshAllDataFromNet(isInternetConnected: Boolean) {
         viewModelScope.launch {
+
+
             if (isInternetConnected)
                 showProgressBar.value = true
 
@@ -36,6 +38,7 @@ class MainScreenViewModel(
                 updateData(newDataProduct.await(),newDataAds.await())
 
             showProgressBar.value = false
+
         }
     }
 

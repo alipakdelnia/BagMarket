@@ -55,7 +55,7 @@ fun MainScreen() {
     SideEffect { uiController.setStatusBarColor(Color.White) }
 
     val viewModel =
-        getNavViewModel<MainScreenViewModel>(parameters = {parametersOf(NetworkChecker(context).isEthernetConnected)})
+        getNavViewModel<MainScreenViewModel>(parameters = { parametersOf(NetworkChecker(context).isInternetConnected) })
 
     Column(
         modifier = Modifier
