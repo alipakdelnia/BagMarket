@@ -30,9 +30,11 @@ import com.example.bagmarket.model.data.Product
 import com.example.bagmarket.ui.features.mainScreen.MainScreenViewModel
 import com.example.bagmarket.ui.theme.*
 import com.example.bagmarket.util.CATEGORY
+import com.example.bagmarket.util.MyScreens
 import com.example.bagmarket.util.NetworkChecker
 import com.example.bagmarket.util.TAGS
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dev.burnoo.cokoin.navigation.getNavController
 import dev.burnoo.cokoin.navigation.getNavViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -56,6 +58,7 @@ fun MainScreen() {
 
     val viewModel =
         getNavViewModel<MainScreenViewModel>(parameters = { parametersOf(NetworkChecker(context).isInternetConnected) })
+    val navigation = getNavController()
 
     Column(
         modifier = Modifier
@@ -64,16 +67,25 @@ fun MainScreen() {
             .padding(bottom = 16.dp)
     ) {
 
-        if (viewModel.showProgressBar.value){
+        if (viewModel.showProgressBar.value) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth(), color = Blue)
         }
 
-        TopToolBar()
-        CategoryBar(CATEGORY)
+        TopToolBar(onCartClicked = {
+            navigation.navigate(MyScreens.CartScreen.route)
+        },
+            onProfileClicked = {
+                navigation.navigate(MyScreens.ProfileScreen.route)
+            })
+        CategoryBar(CATEGORY) {
+            navigation.navigate(MyScreens.CategoryScreen.route + "/" + it)
+        }
 
         val productDataState = viewModel.dataProducts
         val adsDataState = viewModel.dataAds
-        ProductSubjectList(TAGS , productDataState.value , adsDataState.value)
+        ProductSubjectList(TAGS, productDataState.value, adsDataState.value) {
+            navigation.navigate(MyScreens.ProductScreen.route + "/" + it)
+        }
 
     }
 
@@ -84,18 +96,23 @@ fun MainScreen() {
 //- - - - - - - - - - - - - - -- - -- - - - -- -- --- --- --  -- ---- --
 
 @Composable
-fun ProductSubjectList(tags: List<String>, products: List<Product>, ads: List<Ads>) {
+fun ProductSubjectList(
+    tags: List<String>,
+    products: List<Product>,
+    ads: List<Ads>,
+    onProductClicked: (String) -> Unit
+) {
 
-    if (products.isNotEmpty()){
+    if (products.isNotEmpty()) {
         Column {
             tags.forEachIndexed { it, _ ->
 
                 val withTagsData = products.filter { product -> product.tags == tags[it] }
-                ProductSubject(tags[it],withTagsData.shuffled())
+                ProductSubject(tags[it], withTagsData.shuffled(), onProductClicked)
 
                 if (ads.size >= 2)
-                    if (it==1 || it ==2 )
-                        BigPictureAds(ads[it-1])
+                    if (it == 1 || it == 2)
+                        BigPictureAds(ads[it - 1])
             }
         }
     }
@@ -103,21 +120,20 @@ fun ProductSubjectList(tags: List<String>, products: List<Product>, ads: List<Ad
 }
 
 
-
 //- - - - - - - - - - - - - - -- - -- - - - -- -- --- --- --  -- ---- --
 
 @Composable
-fun TopToolBar() {
+fun TopToolBar(onCartClicked: () -> Unit, onProfileClicked: () -> Unit) {
 
     TopAppBar(
         elevation = 0.dp,
         backgroundColor = Color.White,
         title = { Text(text = "Bag Market") },
         actions = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = { onCartClicked.invoke() }) {
                 Icon(Icons.Default.ShoppingCart, contentDescription = null)
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = { onProfileClicked.invoke() }) {
                 Icon(Icons.Default.Person, contentDescription = null)
             }
 
@@ -130,14 +146,15 @@ fun TopToolBar() {
 //- - - - - - - - - - - - - - -- - -- - - - -- -- --- --- --  -- ---- --
 
 @Composable
-fun CategoryBar(categoryList: List<Pair<String,Int>>) {
+fun CategoryBar(categoryList: List<Pair<String, Int>>, onCategoryClicked: (String) -> Unit) {
 
     LazyRow(
         modifier = Modifier.padding(16.dp),
         contentPadding = PaddingValues(16.dp)
     ) {
         items(categoryList.size) {
-            CategoryItem(categoryList[it])
+            CategoryItem(categoryList[it], onCategoryClicked)
+
         }
     }
 
@@ -145,15 +162,19 @@ fun CategoryBar(categoryList: List<Pair<String,Int>>) {
 }
 
 @Composable
-fun CategoryItem(subject: Pair<String,Int>) {
+fun CategoryItem(subject: Pair<String, Int>, onCategoryClicked: (String) -> Unit) {
     Column(
         modifier = Modifier
             .padding(16.dp)
-            .clickable { },
+            .clickable { onCategoryClicked.invoke(subject.first) },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Surface(shape = Shapes.medium, color = CardViewBackground) {
-            Image(painter = painterResource(id = subject.second), contentDescription = null)
+            Image(
+                painter = painterResource(id = subject.second),
+                contentDescription = null,
+                modifier = Modifier.padding(10.dp)
+            )
         }
         Text(
             text = subject.first,
@@ -169,7 +190,7 @@ fun CategoryItem(subject: Pair<String,Int>) {
 
 
 @Composable
-fun ProductSubject(subject: String , data: List<Product>) {
+fun ProductSubject(subject: String, data: List<Product>, onProductClicked: (String) -> Unit) {
 
     Column(modifier = Modifier.padding(top = 32.dp)) {
 
@@ -178,33 +199,33 @@ fun ProductSubject(subject: String , data: List<Product>) {
             modifier = Modifier.padding(start = 16.dp),
             style = MaterialTheme.typography.h6
         )
-        ProductBar(data)
+        ProductBar(data, onProductClicked)
 
     }
 
 }
 
 @Composable
-fun ProductBar(data : List<Product>) {
+fun ProductBar(data: List<Product>, onProductClicked: (String) -> Unit) {
 
     LazyRow(
         modifier = Modifier.padding(top = 16.dp),
         contentPadding = PaddingValues(end = 16.dp)
     ) {
         items(data.size) {
-            ProductItem(data[it])
+            ProductItem(data[it], onProductClicked)
         }
     }
 
 }
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(product: Product, onProductClicked: (String) -> Unit) {
 
     Card(
         modifier = Modifier
             .padding(start = 16.dp)
-            .clickable { },
+            .clickable { onProductClicked.invoke(product.productId) },
         elevation = 4.dp,
         shape = Shapes.medium
     ) {
@@ -224,12 +245,15 @@ fun ProductItem(product: Product) {
                 )
 
                 Text(
-                    text = product.price +" Tomans",
+                    text = product.price + " Tomans",
                     style = TextStyle(fontSize = 14.sp),
                     modifier = Modifier.padding(top = 4.dp)
                 )
 
-                Text(text = product.soldItem+" Sold", style = TextStyle(color = Color.Gray, fontSize = 13.sp))
+                Text(
+                    text = product.soldItem + " Sold",
+                    style = TextStyle(color = Color.Gray, fontSize = 13.sp)
+                )
             }
         }
 
@@ -244,7 +268,7 @@ fun ProductItem(product: Product) {
 fun BigPictureAds(ads: Ads) {
 
     AsyncImage(
-       model = ads.imageURL,
+        model = ads.imageURL,
         contentDescription = null,
         modifier = Modifier
             .fillMaxWidth()

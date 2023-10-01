@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class MainScreenViewModel(
     private val productRepository: ProductRepository,
-    isInternetConnected: Boolean = true
+    isInternetConnected: Boolean
 ) : ViewModel() {
 
     val dataProducts = mutableStateOf<List<Product>>(listOf())
@@ -26,9 +26,7 @@ class MainScreenViewModel(
     private fun refreshAllDataFromNet(isInternetConnected: Boolean) {
         viewModelScope.launch {
 
-
-            if (isInternetConnected)
-                showProgressBar.value = true
+            if (isInternetConnected) { showProgressBar.value = true }
 
                 delay(1000)
 

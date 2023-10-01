@@ -67,11 +67,10 @@ fun BagMarketUi() {
             }else{
                 IntroScreen()
             }
-
         }
 
         composable(
-            route = MyScreens.ProductScreen.route +"/"+ KEY_PRODUCT_ARG,
+            route = MyScreens.ProductScreen.route +"/{$KEY_PRODUCT_ARG}",
             arguments = listOf(navArgument(KEY_PRODUCT_ARG) {
                 type = NavType.IntType
             })
@@ -80,7 +79,7 @@ fun BagMarketUi() {
         }
 
         composable(
-            route = MyScreens.CategoryScreen.route+"/"+ KEY_CATEGORY_ARG,
+            route = MyScreens.CategoryScreen.route+"/{$KEY_CATEGORY_ARG}" ,
             arguments = listOf(navArgument(KEY_CATEGORY_ARG) {
                 type = NavType.StringType
             })
@@ -102,14 +101,6 @@ fun BagMarketUi() {
 
         composable(MyScreens.SignInScreen.route) {
             SingInScreen()
-        }
-
-        composable(MyScreens.IntroScreen.route) {
-            IntroScreen()
-        }
-
-        composable(MyScreens.NoInternetScreen.route) {
-            NoInternetScreen()
         }
 
 

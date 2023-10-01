@@ -7,34 +7,39 @@ import com.example.bagmarket.model.net.ApiService
 
 class ProductRepositoryImpl(
     private val apiService: ApiService,
-    private val productDao : ProductDao
-):ProductRepository {
-    override suspend fun getAllProducts(isInternetConnected : Boolean): List<Product> {
+    private val productDao: ProductDao
+) : ProductRepository {
+    override suspend fun getAllProducts(isInternetConnected: Boolean): List<Product> {
 
-        if(isInternetConnected){
+        if (isInternetConnected) {
             //get data from server
-val dataFromServer = apiService.getAllProducts()
-            if (dataFromServer.success){
+            val dataFromServer = apiService.getAllProducts()
+            if (dataFromServer.success) {
                 productDao.insertOrUpdate(dataFromServer.products)
                 return dataFromServer.products
             }
-        }else{
+        } else {
             //get data from local
             return productDao.getAll()
         }
-return listOf()
+        return listOf()
     }
 
 
-    override suspend fun getAllAds(isInternetConnected : Boolean): List<Ads> {
+    override suspend fun getAllAds(isInternetConnected: Boolean): List<Ads> {
 
-        if (isInternetConnected){
+        if (isInternetConnected) {
             val dataFromServer = apiService.getAllAds()
-            if (dataFromServer.success){
+            if (dataFromServer.success) {
                 return dataFromServer.ads
             }
         }
         return listOf()
-
     }
+
+    override suspend fun getAllProductsByCategory(category: String): List<Product> {
+        return productDao.getAllByCategory(category)
+    }
+
+
 }
