@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bagmarket.model.data.Ads
 import com.example.bagmarket.model.data.Product
 import com.example.bagmarket.model.repository.product.ProductRepository
+import com.example.bagmarket.util.coroutineExceptionHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,7 +25,7 @@ class MainScreenViewModel(
     }
 
     private fun refreshAllDataFromNet(isInternetConnected: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
 
             if (isInternetConnected) { showProgressBar.value = true }
 

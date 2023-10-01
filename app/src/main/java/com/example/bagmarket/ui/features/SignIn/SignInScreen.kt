@@ -66,6 +66,8 @@ fun SingInScreen() {
     val navigation = getNavController()
     val viewModel = getNavViewModel<SignInViewModel>()
 
+    clearPassword(viewModel)
+
     Box {
 
         Box(
@@ -233,6 +235,7 @@ fun MainTextField(
 ) {
 
     OutlinedTextField(
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         label = { Text(hint) },
         value = edtValue,
         singleLine = true,
@@ -286,4 +289,8 @@ fun PasswordTextField(
 
     )
 
+}
+
+fun clearPassword(viewModel: SignInViewModel){
+    viewModel.password.value = ""
 }

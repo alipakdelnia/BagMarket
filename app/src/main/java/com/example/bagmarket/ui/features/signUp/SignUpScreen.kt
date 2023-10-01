@@ -2,9 +2,7 @@ package com.example.bagmarket.ui.features.signUp
 
 import android.util.Patterns
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -61,9 +59,10 @@ fun SingUpScreen() {
     SideEffect { uiController.setStatusBarColor(Blue) }
 
     val context = LocalContext.current
-
     val navigation = getNavController()
     val viewModel = getNavViewModel<SignUpViewModel>()
+
+    clearPassword(viewModel)
 
     Box {
 
@@ -77,7 +76,8 @@ fun SingUpScreen() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.85f),
+                .fillMaxHeight(0.85f)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -265,6 +265,7 @@ fun MainTextField(
 ) {
 
     OutlinedTextField(
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         label = { Text(hint) },
         value = edtValue,
         singleLine = true,
@@ -318,4 +319,10 @@ fun PasswordTextField(
 
     )
 
+}
+
+
+fun clearPassword(viewModel: SignUpViewModel){
+    viewModel.password.value = ""
+    viewModel.confirmPassword.value = ""
 }
