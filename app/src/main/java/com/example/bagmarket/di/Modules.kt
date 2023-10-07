@@ -29,7 +29,7 @@ val myModules = module {
     single<UserRepository> { UserRepositoryImpl(get(), get()) }
     single<ProductRepository> { ProductRepositoryImpl(get(), get<AppDatabase>().productDao()) }
 
-    viewModel{ ProductViewModel() }
+    viewModel{ ProductViewModel(get()) }
     viewModel { SignUpViewModel(get()) }
     viewModel { SignInViewModel(get()) }
     viewModel { (isNetConnected: Boolean) -> MainScreenViewModel(get(), isNetConnected) }
