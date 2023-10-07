@@ -1,6 +1,7 @@
 package com.example.bagmarket.model.net
 
 import com.example.bagmarket.model.data.AdsResponse
+import com.example.bagmarket.model.data.CommentsResponse
 import com.example.bagmarket.model.data.LoginResponsed
 import com.example.bagmarket.model.data.ProductResponse
 import com.example.bagmarket.model.repository.TokenInMemory
@@ -10,7 +11,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -31,6 +31,10 @@ interface ApiService {
 
     @GET("getSliderPics")
     suspend fun getAllAds():AdsResponse
+
+    @POST("getComments")
+    suspend fun getAllComments(@Body jsonObject: JsonObject): CommentsResponse
+
 
 }
 

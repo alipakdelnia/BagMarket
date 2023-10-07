@@ -13,7 +13,7 @@ class SignUpViewModel(private val userRepository: UserRepository) : ViewModel() 
     val password = MutableLiveData("")
     val confirmPassword = MutableLiveData("")
 
-    fun signUpUser(LoggingEvent:(String)->Unit) {
+    fun signUpUser (LoggingEvent:(String)->Unit) {
         viewModelScope.launch(coroutineExceptionHandler) {
            val result = userRepository.signUp(name.value!!, email.value!!, password.value!!)
             LoggingEvent(result)

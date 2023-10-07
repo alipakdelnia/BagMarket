@@ -1,6 +1,7 @@
 package com.example.bagmarket.ui.features
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -15,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,9 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.bagmarket.R
+import com.example.bagmarket.model.data.CommentsResponse
 import com.example.bagmarket.model.data.Product
 import com.example.bagmarket.ui.features.product.ProductViewModel
 import com.example.bagmarket.ui.theme.BackgroundMain
+import com.example.bagmarket.ui.theme.Blue
 import com.example.bagmarket.ui.theme.MainAppTheme
 import com.example.bagmarket.ui.theme.Shapes
 import com.example.bagmarket.util.MyScreens
@@ -47,7 +52,7 @@ fun ProductScreen(productId: String) {
     val context = LocalContext.current
 
     val viewModel = getNavViewModel<ProductViewModel>()
-    viewModel.loadData(productId)
+    viewModel.loadData(productId, NetworkChecker(context).isInternetConnected )
 
     val navigation = getNavController()
 
@@ -78,7 +83,8 @@ fun ProductScreen(productId: String) {
 
 
             ProductItems(
-                viewModel.thisProduct.value,
+                data = viewModel.thisProduct.value,
+                comments = viewModel.comments.value,
                 Oncategoryclicked = { navigation.navigate(MyScreens.CategoryScreen.route + "/" + it) })
         }
 
@@ -131,10 +137,99 @@ fun ProductToolbar(
 //--------------------------------------------------
 
 @Composable
-fun ProductItems(data: Product, Oncategoryclicked: (String) -> Unit) {
+fun ProductItems(data: Product,comments:List<CommentsResponse.Comment>, Oncategoryclicked: (String) -> Unit) {
 
     Column(modifier = Modifier.padding(16.dp)) {
         ProductDesign(data, Oncategoryclicked)
+
+        Divider(
+            color = Color.LightGray,
+            thickness = 1.dp,
+            modifier = Modifier.padding(top = 14.dp, bottom = 14.dp)
+        )
+
+        ProductDetail(data, comments.size.toString())
+
+        Divider(
+            color = Color.LightGray,
+            thickness = 1.dp,
+            modifier = Modifier.padding(top = 14.dp, bottom = 14.dp)
+        )
+
+    }
+
+}
+
+@Composable
+fun ProductDetail(data: Product, commentNumber: String) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = R.drawable.baseline_comment_24),
+                    contentDescription = null,
+                    modifier = Modifier.size(26.dp)
+                )
+
+                Text(
+                    text = "$commentNumber Comments",
+                    modifier = Modifier.padding(start = 6.dp),
+                    fontSize = 13.sp
+                )
+
+            }
+            Row(
+                modifier = Modifier.padding(top = 10.dp, bottom = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.baseline_shopping_bag_24),
+                    contentDescription = null,
+                    modifier = Modifier.size(26.dp)
+                )
+
+                Text(
+                    text = data.material,
+                    modifier = Modifier.padding(start = 6.dp),
+                    fontSize = 13.sp
+                )
+
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = R.drawable.baseline_shopping_cart_24),
+                    contentDescription = null,
+                    modifier = Modifier.size(26.dp)
+                )
+
+                Text(
+                    text = "${data.soldItem} Sold",
+                    modifier = Modifier.padding(start = 6.dp),
+                    fontSize = 13.sp
+                )
+
+            }
+        }
+
+        Surface(
+            modifier = Modifier
+                .clip(Shapes.large)
+                .align(Alignment.Bottom), color = Blue
+        ) {
+            Text(
+                text = data.tags,
+                color = Color.White,
+                modifier = Modifier.padding(6.dp),
+                style = TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Medium)
+            )
+
+        }
+
     }
 
 }
