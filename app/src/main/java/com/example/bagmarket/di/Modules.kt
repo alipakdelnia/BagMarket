@@ -11,6 +11,7 @@ import com.example.bagmarket.model.repository.user.UserRepositoryImpl
 import com.example.bagmarket.ui.features.SignIn.SignInViewModel
 import com.example.bagmarket.ui.features.category.CategoryViewModel
 import com.example.bagmarket.ui.features.mainScreen.MainScreenViewModel
+import com.example.bagmarket.ui.features.product.ProductViewModel
 import com.example.bagmarket.ui.features.signUp.SignUpViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -28,6 +29,7 @@ val myModules = module {
     single<UserRepository> { UserRepositoryImpl(get(), get()) }
     single<ProductRepository> { ProductRepositoryImpl(get(), get<AppDatabase>().productDao()) }
 
+    viewModel{ ProductViewModel() }
     viewModel { SignUpViewModel(get()) }
     viewModel { SignInViewModel(get()) }
     viewModel { (isNetConnected: Boolean) -> MainScreenViewModel(get(), isNetConnected) }

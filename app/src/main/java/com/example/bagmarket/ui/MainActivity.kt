@@ -34,11 +34,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             Koin(appDeclaration = {
                 androidContext(this@MainActivity)
-                modules(myModules) }) {
+                modules(myModules)
+            }) {
                 MainAppTheme {
                     Surface(color = BackgroundMain, modifier = Modifier.fillMaxSize()) {
 
-                        val userRepository : UserRepository = get()
+                        val userRepository: UserRepository = get()
                         userRepository.loadToken()
 
                         BagMarketUi()
@@ -62,24 +63,24 @@ fun BagMarketUi() {
 
         composable(MyScreens.MainScreen.route) {
 
-            if (TokenInMemory.token != null){
+            if (TokenInMemory.token != null) {
                 MainScreen()
-            }else{
+            } else {
                 IntroScreen()
             }
         }
 
         composable(
-            route = MyScreens.ProductScreen.route +"/{$KEY_PRODUCT_ARG}",
+            route = MyScreens.ProductScreen.route + "/{$KEY_PRODUCT_ARG}",
             arguments = listOf(navArgument(KEY_PRODUCT_ARG) {
-                type = NavType.IntType
+                type = NavType.StringType
             })
         ) {
-            ProductScreen(it.arguments!!.getInt(KEY_PRODUCT_ARG, -1))
+            ProductScreen(it.arguments!!.getString(KEY_PRODUCT_ARG, "null"))
         }
 
         composable(
-            route = MyScreens.CategoryScreen.route+"/{$KEY_CATEGORY_ARG}" ,
+            route = MyScreens.CategoryScreen.route + "/{$KEY_CATEGORY_ARG}",
             arguments = listOf(navArgument(KEY_CATEGORY_ARG) {
                 type = NavType.StringType
             })
