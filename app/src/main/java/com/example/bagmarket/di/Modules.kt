@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.bagmarket.model.dataBase.AppDatabase
 import com.example.bagmarket.model.net.createApiService
+import com.example.bagmarket.model.repository.cart.CartRepository
+import com.example.bagmarket.model.repository.cart.CartRepositoryImpl
 import com.example.bagmarket.model.repository.comment.CommentRepository
 import com.example.bagmarket.model.repository.comment.CommentRepositoryImpl
 import com.example.bagmarket.model.repository.product.ProductRepository
@@ -31,11 +33,12 @@ val myModules = module {
     single<UserRepository> { UserRepositoryImpl(get(), get()) }
     single<ProductRepository> { ProductRepositoryImpl(get(), get<AppDatabase>().productDao()) }
     single <CommentRepository> {CommentRepositoryImpl(get())}
+    single <CartRepository> {CartRepositoryImpl(get())}
 
-    viewModel{ ProductViewModel(get(),get()) }
+    viewModel{ ProductViewModel(get(),get(),get()) }
     viewModel { SignUpViewModel(get()) }
     viewModel { SignInViewModel(get()) }
-    viewModel { (isNetConnected: Boolean) -> MainScreenViewModel(get(), isNetConnected) }
+    viewModel { (isNetConnected: Boolean) -> MainScreenViewModel(get(),get(), isNetConnected) }
     viewModel { CategoryViewModel(get()) }
 
 }

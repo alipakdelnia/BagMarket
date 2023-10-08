@@ -36,6 +36,13 @@ interface ApiService {
     suspend fun addNewComment(@Body jsonObject: JsonObject): AddNewCommentResponse
 
 
+    @POST("addToCart")
+    suspend fun addProductToCart (@Body jsonObject: JsonObject):CartResponse
+
+    @GET("getUserCart")
+    suspend fun getUserCart():UserCartInfo
+
+
 }
 
 fun createApiService():ApiService{

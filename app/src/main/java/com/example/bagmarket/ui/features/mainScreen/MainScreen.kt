@@ -1,5 +1,6 @@
 package com.example.bagmarket.ui.features
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -60,6 +61,10 @@ fun MainScreen() {
         getNavViewModel<MainScreenViewModel>(parameters = { parametersOf(NetworkChecker(context).isInternetConnected) })
     val navigation = getNavController()
 
+    if (NetworkChecker(context).isInternetConnected) {
+        viewModel.loadBadgeNumber()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,9 +76,15 @@ fun MainScreen() {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth(), color = Blue)
         }
 
-        TopToolBar(onCartClicked = {
-            navigation.navigate(MyScreens.CartScreen.route)
-        },
+        TopToolBar(
+            badgeNumber = viewModel.badgeNumber.value,
+            onCartClicked = {
+                if (NetworkChecker(context).isInternetConnected)
+                    navigation.navigate(MyScreens.CartScreen.route)
+                else
+                    Toast.makeText(context, "please connect to internet first", Toast.LENGTH_SHORT)
+                        .show()
+            },
             onProfileClicked = {
                 navigation.navigate(MyScreens.ProfileScreen.route)
             })
@@ -123,7 +134,7 @@ fun ProductSubjectList(
 //- - - - - - - - - - - - - - -- - -- - - - -- -- --- --- --  -- ---- --
 
 @Composable
-fun TopToolBar(onCartClicked: () -> Unit, onProfileClicked: () -> Unit) {
+fun TopToolBar(badgeNumber: Int, onCartClicked: () -> Unit, onProfileClicked: () -> Unit) {
 
     TopAppBar(
         elevation = 0.dp,
@@ -131,7 +142,13 @@ fun TopToolBar(onCartClicked: () -> Unit, onProfileClicked: () -> Unit) {
         title = { Text(text = "Bag Market") },
         actions = {
             IconButton(onClick = { onCartClicked.invoke() }) {
-                Icon(Icons.Default.ShoppingCart, contentDescription = null)
+                if (badgeNumber == 0)
+                    Icon(Icons.Default.ShoppingCart, contentDescription = null)
+                else {
+                    BadgedBox(badge = { Badge { Text(badgeNumber.toString()) } }) {
+                        Icon(Icons.Default.ShoppingCart, null)
+                    }
+                }
             }
             IconButton(onClick = { onProfileClicked.invoke() }) {
                 Icon(Icons.Default.Person, contentDescription = null)

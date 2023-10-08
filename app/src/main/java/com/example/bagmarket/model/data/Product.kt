@@ -22,5 +22,6 @@ data class Product(
     val soldItem: String,
     val category: String,
     val material: String,
-    val tags: String
+    val tags: String,
+    val quantity:String?
 )

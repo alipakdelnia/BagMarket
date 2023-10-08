@@ -146,7 +146,7 @@ fun CategoryItem(data: Product, onProductClicked: (String) -> Unit) {
 @Composable
 fun CategoryList(data: List<Product>, onProductClicked: (String) -> Unit) {
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 16.dp)) {
 
         items(data.size) {
             CategoryItem(data[it], onProductClicked)
