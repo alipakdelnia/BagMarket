@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.bagmarket.model.dataBase.AppDatabase
 import com.example.bagmarket.model.net.createApiService
+import com.example.bagmarket.model.repository.comment.CommentRepository
+import com.example.bagmarket.model.repository.comment.CommentRepositoryImpl
 import com.example.bagmarket.model.repository.product.ProductRepository
 import com.example.bagmarket.model.repository.product.ProductRepositoryImpl
 import com.example.bagmarket.model.repository.user.UserRepository
@@ -28,6 +30,7 @@ val myModules = module {
 
     single<UserRepository> { UserRepositoryImpl(get(), get()) }
     single<ProductRepository> { ProductRepositoryImpl(get(), get<AppDatabase>().productDao()) }
+    single <CommentRepository> {CommentRepositoryImpl(get())}
 
     viewModel{ ProductViewModel(get(),get()) }
     viewModel { SignUpViewModel(get()) }

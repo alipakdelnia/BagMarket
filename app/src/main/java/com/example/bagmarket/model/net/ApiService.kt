@@ -1,9 +1,6 @@
 package com.example.bagmarket.model.net
 
-import com.example.bagmarket.model.data.AdsResponse
-import com.example.bagmarket.model.data.CommentsResponse
-import com.example.bagmarket.model.data.LoginResponsed
-import com.example.bagmarket.model.data.ProductResponse
+import com.example.bagmarket.model.data.*
 import com.example.bagmarket.model.repository.TokenInMemory
 import com.example.bagmarket.util.BASE_URL
 import com.google.gson.JsonObject
@@ -34,6 +31,9 @@ interface ApiService {
 
     @POST("getComments")
     suspend fun getAllComments(@Body jsonObject: JsonObject): CommentsResponse
+
+    @POST("addNewComment")
+    suspend fun addNewComment(@Body jsonObject: JsonObject): AddNewCommentResponse
 
 
 }
