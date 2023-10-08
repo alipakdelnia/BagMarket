@@ -8,7 +8,7 @@ const val KEY_CATEGORY_ARG = "categoryName"
 const val BASE_URL = "https://dunijet.ir/Projects/DuniBazaar/"
 const val VALUE_SUCCESS = "success"
 val EMPTY_PRODUCT = Product("","","","","","","","","","0")
-const val DATA_BASE_VERSION = 1
+const val DATA_BASE_VERSION = 2
 
 val CATEGORY = listOf(
     Pair("Backpack", R.drawable.ic_cat_backpack),
