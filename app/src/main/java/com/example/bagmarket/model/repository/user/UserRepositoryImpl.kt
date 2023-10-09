@@ -26,6 +26,7 @@ class UserRepositoryImpl(
             saveToken(result.token)
             saveUserName(userName)
             saveName(name)
+            saveUserLoginTime()
             return VALUE_SUCCESS
         } else {
             return result.message
@@ -45,6 +46,7 @@ class UserRepositoryImpl(
             TokenInMemory.refreshTokenSignIn(userName, result.token)
             saveToken(result.token)
             saveUserName(userName)
+            saveUserLoginTime()
             return VALUE_SUCCESS
         } else {
             return result.message
