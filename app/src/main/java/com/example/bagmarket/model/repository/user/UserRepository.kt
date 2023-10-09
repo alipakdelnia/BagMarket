@@ -15,4 +15,13 @@ interface UserRepository {
     fun saveUserName(userName: String)
     fun getUserName():String?
 
+    fun saveName(name: String)
+    fun getName():String?
+
+    fun saveUserLocation(address:String,postalCode:String)
+    fun getUserLocation():Pair<String,String>
+
+    fun saveUserLoginTime()
+    fun getUserLoginTime():String
+
 }
