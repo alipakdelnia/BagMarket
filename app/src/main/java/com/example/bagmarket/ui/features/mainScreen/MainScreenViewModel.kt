@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bagmarket.model.data.Ads
+import com.example.bagmarket.model.data.CheckOut
 import com.example.bagmarket.model.data.Product
 import com.example.bagmarket.model.repository.cart.CartRepository
 import com.example.bagmarket.model.repository.product.ProductRepository
@@ -23,8 +24,29 @@ class MainScreenViewModel(
     val showProgressBar = mutableStateOf(true)
     val badgeNumber = mutableStateOf(0)
 
+    val showPaymentResultDialog = mutableStateOf(false)
+    val checkoutData = mutableStateOf(CheckOut(null,null))
+
     init {
         refreshAllDataFromNet(isInternetConnected)
+    }
+
+    fun  getCheckoutData(){
+        viewModelScope.launch(coroutineExceptionHandler){
+            val result = cartRepository.checkOut(cartRepository.getOrderId())
+            if (result.success!!){
+                checkoutData.value = result
+                showPaymentResultDialog.value = true
+            }
+        }
+    }
+
+    fun getPaymentStatus():Int{
+        return cartRepository.getPurchaseStatus()
+    }
+
+    fun setPaymentStatus(status:Int){
+        cartRepository.setPurchaseStatus(status)
     }
 
     private fun refreshAllDataFromNet(isInternetConnected: Boolean) {

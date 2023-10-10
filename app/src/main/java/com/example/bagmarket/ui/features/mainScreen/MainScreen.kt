@@ -22,18 +22,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
+import com.example.bagmarket.R
 import com.example.bagmarket.model.data.Ads
+import com.example.bagmarket.model.data.CheckOut
 import com.example.bagmarket.model.data.Product
 import com.example.bagmarket.ui.features.mainScreen.MainScreenViewModel
 import com.example.bagmarket.ui.theme.*
-import com.example.bagmarket.util.CATEGORY
-import com.example.bagmarket.util.MyScreens
-import com.example.bagmarket.util.NetworkChecker
-import com.example.bagmarket.util.TAGS
+import com.example.bagmarket.util.*
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.burnoo.cokoin.navigation.getNavController
 import dev.burnoo.cokoin.navigation.getNavViewModel
@@ -65,42 +66,160 @@ fun MainScreen() {
         viewModel.loadBadgeNumber()
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = 16.dp)
-    ) {
-
-        if (viewModel.showProgressBar.value) {
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth(), color = Blue)
+    if (viewModel.getPaymentStatus() == PAYMENT_PENDING){
+        if (NetworkChecker(context).isInternetConnected){
+            viewModel.getCheckoutData()
         }
+    }
 
-        TopToolBar(
-            badgeNumber = viewModel.badgeNumber.value,
-            onCartClicked = {
-                if (NetworkChecker(context).isInternetConnected)
-                    navigation.navigate(MyScreens.CartScreen.route)
-                else
-                    Toast.makeText(context, "please connect to internet first", Toast.LENGTH_SHORT)
-                        .show()
-            },
-            onProfileClicked = {
-                navigation.navigate(MyScreens.ProfileScreen.route)
-            })
-        CategoryBar(CATEGORY) {
-            navigation.navigate(MyScreens.CategoryScreen.route + "/" + it)
+    Box {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp)
+        ) {
+
+            if (viewModel.showProgressBar.value) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth(), color = Blue)
+            }
+
+            TopToolBar(
+                badgeNumber = viewModel.badgeNumber.value,
+                onCartClicked = {
+                    if (NetworkChecker(context).isInternetConnected)
+                        navigation.navigate(MyScreens.CartScreen.route)
+                    else
+                        Toast.makeText(
+                            context,
+                            "please connect to internet first",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                },
+                onProfileClicked = {
+                    navigation.navigate(MyScreens.ProfileScreen.route)
+                })
+            CategoryBar(CATEGORY) {
+                navigation.navigate(MyScreens.CategoryScreen.route + "/" + it)
+            }
+
+            val productDataState = viewModel.dataProducts
+            val adsDataState = viewModel.dataAds
+            ProductSubjectList(TAGS, productDataState.value, adsDataState.value) {
+                navigation.navigate(MyScreens.ProductScreen.route + "/" + it)
+            }
+
         }
+        if (viewModel.showPaymentResultDialog.value) {
 
-        val productDataState = viewModel.dataProducts
-        val adsDataState = viewModel.dataAds
-        ProductSubjectList(TAGS, productDataState.value, adsDataState.value) {
-            navigation.navigate(MyScreens.ProductScreen.route + "/" + it)
+            PaymentResultDialog(
+                checkoutResult = viewModel.checkoutData.value,
+                onDismiss = {
+                    viewModel.showPaymentResultDialog.value = false
+                    viewModel.setPaymentStatus(NO_PAYMENT)
+                }
+            )
+
         }
 
     }
+}
 
 
+@Composable
+private fun PaymentResultDialog(
+    checkoutResult: CheckOut,
+    onDismiss: () -> Unit
+) {
+
+    Dialog(onDismissRequest = onDismiss) {
+
+        Card(
+            elevation = 8.dp,
+            shape = Shapes.medium
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Text(
+                    text = "Payment Result",
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Main Data
+                if (checkoutResult.order?.status?.toInt() == PAYMENT_SUCCESS) {
+
+                    AsyncImage(
+                        model = R.drawable.success_anim,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.size(110.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Text(text = "Payment was successful!", style = TextStyle(fontSize = 16.sp))
+                    Text(
+                        text = "Purchase Amount: " + stylePrice(
+                            (checkoutResult.order!!.amount).substring(
+                                0,
+                                (checkoutResult.order!!.amount).length - 1
+                            )
+                        )
+                    )
+
+                } else {
+
+                    AsyncImage(
+                        model = R.drawable.fail_anim,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(110.dp)
+                            .padding(top = 6.dp, bottom = 6.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Text(text = "Payment was not successful!", style = TextStyle(fontSize = 16.sp))
+                    Text(
+                        text = "Purchase Amount: " + stylePrice(
+                            (checkoutResult.order!!.amount).substring(
+                                0,
+                                (checkoutResult.order.amount).length - 1
+                            )
+                        )
+                    )
+
+                }
+
+                // Ok Button
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+
+                    TextButton(onClick = onDismiss) {
+                        Text(text = "ok")
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                }
+            }
+        }
+    }
 }
 
 

@@ -17,6 +17,7 @@ import com.example.bagmarket.model.repository.TokenInMemory
 import com.example.bagmarket.model.repository.user.UserRepository
 import com.example.bagmarket.ui.features.*
 import com.example.bagmarket.ui.features.SignIn.SingInScreen
+import com.example.bagmarket.ui.features.cart.CartScreen
 import com.example.bagmarket.ui.features.product.ProductScreen
 import com.example.bagmarket.ui.features.signUp.SingUpScreen
 import com.example.bagmarket.ui.theme.BackgroundMain
