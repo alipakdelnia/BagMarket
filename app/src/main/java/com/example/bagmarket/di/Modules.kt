@@ -13,6 +13,7 @@ import com.example.bagmarket.model.repository.product.ProductRepositoryImpl
 import com.example.bagmarket.model.repository.user.UserRepository
 import com.example.bagmarket.model.repository.user.UserRepositoryImpl
 import com.example.bagmarket.ui.features.SignIn.SignInViewModel
+import com.example.bagmarket.ui.features.cart.CartViewModel
 import com.example.bagmarket.ui.features.category.CategoryViewModel
 import com.example.bagmarket.ui.features.mainScreen.MainScreenViewModel
 import com.example.bagmarket.ui.features.product.ProductViewModel
@@ -34,7 +35,7 @@ val myModules = module {
     single<UserRepository> { UserRepositoryImpl(get(), get()) }
     single<ProductRepository> { ProductRepositoryImpl(get(), get<AppDatabase>().productDao()) }
     single<CommentRepository> { CommentRepositoryImpl(get()) }
-    single<CartRepository> { CartRepositoryImpl(get()) }
+    single<CartRepository> { CartRepositoryImpl(get(),get()) }
 
     viewModel { ProfileViewModel(get()) }
     viewModel { ProductViewModel(get(), get(), get()) }
@@ -42,5 +43,6 @@ val myModules = module {
     viewModel { SignInViewModel(get()) }
     viewModel { (isNetConnected: Boolean) -> MainScreenViewModel(get(), get(), isNetConnected) }
     viewModel { CategoryViewModel(get()) }
+    viewModel { CartViewModel(get(), get()) }
 
 }

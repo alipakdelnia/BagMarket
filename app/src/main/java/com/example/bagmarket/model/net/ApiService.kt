@@ -42,6 +42,16 @@ interface ApiService {
     @GET("getUserCart")
     suspend fun getUserCart():UserCartInfo
 
+    @POST("removeFromCart")
+    suspend fun removeFromCart(@Body jsonObject: JsonObject):CartResponse
+
+    @POST ("submitOrder")
+    suspend fun submitOrder(@Body jsonObject: JsonObject):SubmitOrder
+
+    @POST("Checkout")
+    suspend fun checkOut(@Body jsonObject: JsonObject):CheckOut
+
+
 
 }
 
